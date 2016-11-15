@@ -13,8 +13,11 @@ void setup()
   Serial.begin(115200); //for sending A0 pin values
   
   pinMode(outPin,OUTPUT);        //Signal generator pin
+  pinMode(5, OUTPUT);  //LEDblue main
+  pinMode(6, OUTPUT); //LEDgreen 2 doigts
+  pinMode(7, OUTPUT);  //LEDred 1 doigt
   
-  setFrequency(500); //generate a square wave (in this case at 1000Hz)
+  setFrequency(16000000); //generate a square wave (in this case at 1000Hz)
   
   //for test
   //Serial.println();
@@ -31,6 +34,31 @@ void loop()
   Serial.write( (val >> 8) & 0xff );                                            
   Serial.write( val & 0xff );
  
+  if(val<1023 && val>950) // 1 doigt
+   {
+        digitalWrite(7,HIGH);
+        digitalWrite(6,LOW);
+        digitalWrite(5,LOW);
+   }
+   else if (val<950 && val>800) // 2 doigts
+   {
+        digitalWrite(6,HIGH);
+        digitalWrite(5,LOW);
+        digitalWrite(7,LOW);
+   }
+   else if (val<800)  // main
+   {
+        digitalWrite(5,HIGH);
+        digitalWrite(6,LOW);
+        digitalWrite(7,LOW);
+   }
+   else
+   {
+        digitalWrite(6,LOW);
+        digitalWrite(5,LOW);
+        digitalWrite(7,LOW);
+   }  
+
 }
 
 //set frequency (Hz)
